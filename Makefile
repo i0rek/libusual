@@ -42,6 +42,7 @@ libusual_a_SOURCES = usual/config.h.in \
 	usual/heap.h usual/heap.c \
 	usual/list.h usual/list.c \
 	usual/logging.h usual/logging.c \
+	usual/blacklisting.h usual/blacklisting.c \
 	usual/mbuf.h usual/mbuf.c \
 	usual/mdict.h usual/mdict.c \
 	usual/mempool.h usual/mempool.c \

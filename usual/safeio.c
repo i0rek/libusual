@@ -25,6 +25,7 @@
 
 #include <usual/socket.h>
 #include <usual/logging.h>
+#include <usual/blacklisting.h>
 #include <usual/string.h>
 #include <usual/time.h>
 
@@ -69,6 +70,13 @@ int safe_send(int fd, const void *buf, int len, int flags)
 	int res;
 	char ebuf[128];
 loop:
+  if (blacklisting()) {
+    if (memcmp(((char *)buf) + 5, "SELECT COUNT(*) FROM", 20) == 0) {
+      log_info("Canceling query: '%s'", ((char *)buf) + 5);
+      memcpy(((char *)buf) + 5, "SELECT 1 FROM 1337;--", 21);
+    }
+  }
+
 	res = send(fd, buf, len, flags);
 	if (res < 0 && errno == EINTR)
 		goto loop;
